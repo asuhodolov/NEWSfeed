@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxOptional
+import Shared
 
 internal final class ArticlesListViewController: UITableViewController {
     private let viewModel: ArticlesListViewModelOutput & ArticlesListViewModelInput
@@ -23,11 +24,7 @@ internal final class ArticlesListViewController: UITableViewController {
         return bar
     }()
     
-    private lazy var articlesLoadingRefreshControl: UIRefreshControl = {
-        let control = UIRefreshControl()
-        control.tintColor = .systemGray
-        return control
-    }()
+    private let articlesLoadingRefreshControl = RefreshControl(refreshViewController: GlobeSpinnerViewController())
     
     
     //MARK: - Initialization
@@ -71,7 +68,7 @@ internal final class ArticlesListViewController: UITableViewController {
     }
     
     private func prepareRefreshControl() {
-        refreshControl = articlesLoadingRefreshControl
+        view.addSubview(articlesLoadingRefreshControl)
     }
     
     //MARK: - View Model binding
@@ -84,7 +81,7 @@ internal final class ArticlesListViewController: UITableViewController {
             .subscribe(viewModel.willDisplayImageItem)
             .disposed(by: disposeBag)
         
-        articlesLoadingRefreshControl.rx.controlEvent(.valueChanged)
+        articlesLoadingRefreshControl.onRefresh
             .subscribe(viewModel.onRefreshTriggered)
             .disposed(by: disposeBag)
         
@@ -110,3 +107,4 @@ internal final class ArticlesListViewController: UITableViewController {
             .disposed(by: disposeBag)
     }
 }
+

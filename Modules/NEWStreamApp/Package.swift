@@ -53,6 +53,7 @@ let package = Package(
         .target(
             name: "Articles",
             dependencies: [
+                "Shared",
                 "Services",
                 "RxSwift",
                 "RxOptional",
@@ -60,5 +61,14 @@ let package = Package(
                     name: "RxCocoa",
                     package: "RxSwift")],
             path: "Stories/Articles"),
+        .target(
+            name: "Shared",
+            dependencies: [
+                "RxSwift",
+                "RxOptional",
+                .product(
+                    name: "RxCocoa",
+                    package: "RxSwift")],
+            path: "Shared"),
     ]
 )
