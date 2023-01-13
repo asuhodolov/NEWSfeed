@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  RefreshControl.swift
 //  
 //
 //  Created by Aliaksandr Sukhadolau on 5.01.23.
@@ -64,7 +64,7 @@ public final class RefreshControl: UIView {
     public init(refreshViewController: some RefreshAnimatable,
          config: Config = Config(pullDistance: 200.0,
                                  rotationSpeed: 1.0,
-                                 indicatorSize: .init(width: 20.0, height: 20.0))) {
+                                 indicatorSize: .init(width: 25.0, height: 25.0))) {
         self.refreshViewController = refreshViewController
         self.config = config
         super.init(frame: .init(origin: CGPointZero,
@@ -125,8 +125,7 @@ public final class RefreshControl: UIView {
         }
         
         guard offset > config.pullDistance else {
-            let activationProgress = Float(scrollView.contentOffset.y) / config.pullDistance
-            state = .activationProgress(animationPercentage: activationProgress)
+            state = .activationProgress(animationPercentage: offset / config.pullDistance)
             return
         }
         
@@ -134,7 +133,6 @@ public final class RefreshControl: UIView {
         onRefresh.onNext(())
     }
 }
-
 
 extension Reactive where Base: RefreshControl {
     public var isRefreshing: Binder<Bool> {

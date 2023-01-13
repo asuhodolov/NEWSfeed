@@ -15,9 +15,12 @@ class GlobeSpinnerRefreshAnimatable: ObservableObject {
 
 public class GlobeSpinnerViewController: UIHostingController<AnyView>, RefreshAnimatable {
     public var representingView: UIView { view! }
-    public var state: RefreshAnimatableState = .snapshot(animationPercentage: 0.0) {
-        didSet {
-            integration.state = state
+    public var state: RefreshAnimatableState {
+        get {
+            integration.state
+        }
+        set {
+            integration.state = newValue
         }
     }
     
